@@ -25,16 +25,31 @@ fi
 echo -e "${GREEN}📋 Domain: $DOMAIN${NC}"
 echo ""
 
-# Install dependencies
-echo "📦 Installing system dependencies..."
+# Check Docker installation
+echo "📦 Checking dependencies..."
+
+if ! command -v docker &> /dev/null; then
+    echo "Installing Docker..."
+    apt-get update -qq
+    apt-get install -y docker.io -qq
+    systemctl enable docker
+    systemctl start docker
+else
+    echo -e "${GREEN}✅ Docker already installed${NC}"
+fi
+
+if ! command -v docker-compose &> /dev/null; then
+    echo "Installing Docker Compose..."
+    apt-get install -y docker-compose -qq
+else
+    echo -e "${GREEN}✅ Docker Compose already installed${NC}"
+fi
+
+# Install other dependencies
 apt-get update -qq
-apt-get install -y docker.io docker-compose certbot python3-certbot-nginx nginx git curl -qq
+apt-get install -y certbot git curl openssl -qq > /dev/null 2>&1
 
-# Enable and start Docker
-systemctl enable docker
-systemctl start docker
-
-echo -e "${GREEN}✅ Dependencies installed${NC}"
+echo -e "${GREEN}✅ All dependencies ready${NC}"
 echo ""
 
 # Get admin credentials
