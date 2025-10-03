@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from 'framer-motion';
 import { HiSparkles, HiLightningBolt, HiAcademicCap, HiArrowDown, HiChip, HiTrendingUp, HiShieldCheck } from 'react-icons/hi';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

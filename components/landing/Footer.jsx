@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from 'framer-motion';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaYoutube } from 'react-icons/fa';
 import { HiMail, HiLocationMarker, HiGlobeAlt } from 'react-icons/hi';

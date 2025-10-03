@@ -26,6 +26,7 @@ export default function SubmissionsPage() {
 
   useEffect(() => {
     fetchSubmissions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, country, pagination.page]);
 
   const fetchSubmissions = async () => {
