@@ -16,6 +16,9 @@ COPY . .
 # Generate Prisma Client
 RUN npx prisma generate
 
+# Compile the seed script to JavaScript
+RUN npx tsc scripts/seed.ts --outDir scripts --esModuleInterop --resolveJsonModule --skipLibCheck
+
 # Build the application
 RUN npm run build
 
@@ -36,12 +39,9 @@ COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/bcryptjs ./node_modules/bcryptjs
-COPY --from=builder /app/node_modules/tsx ./node_modules/tsx
-COPY --from=builder /app/node_modules/esbuild ./node_modules/esbuild
-COPY --from=builder /app/node_modules/get-tsconfig ./node_modules/get-tsconfig
-COPY --from=builder /app/node_modules/.bin/tsx ./node_modules/.bin/tsx
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/scripts ./scripts
+COPY --from=builder /app/scripts/seed.js ./scripts/seed.js
 
 # Set correct permissions
 RUN chown -R nextjs:nodejs /app

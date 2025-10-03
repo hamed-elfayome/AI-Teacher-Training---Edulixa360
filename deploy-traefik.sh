@@ -143,7 +143,7 @@ services:
         echo '🔄 Running database migrations...' &&
         npx prisma migrate deploy &&
         echo '👤 Seeding admin user...' &&
-        npx tsx scripts/seed.ts &&
+        node scripts/seed.js &&
         echo '✅ Starting application...' &&
         node server.js
       "
