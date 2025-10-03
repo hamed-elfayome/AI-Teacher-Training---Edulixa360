@@ -27,34 +27,29 @@ const ContactForm = ({ onSuccess }) => {
           const data = await geoResponse.json();
           setGuestData(data);
 
-          // Send visitor data immediately to analytics sheet
+          // Send visitor data to database via API
           const visitorData = {
-            type: 'visitor',
-            timestamp: new Date().toISOString(),
             ip: data.ip || 'Unknown',
-            city: data.city || 'Unknown',
-            region: data.region || 'Unknown',
-            country: data.country_name || 'Unknown',
-            countryCode: data.country_code || 'Unknown',
-            timezone: data.timezone || 'Unknown',
+            city: data.city || null,
+            region: data.region || null,
+            country: data.country_name || null,
+            countryCode: data.country_code || null,
+            timezone: data.timezone || null,
             latitude: data.latitude || null,
             longitude: data.longitude || null,
-            org: data.org || 'Unknown'
+            org: data.org || null,
+            userAgent: navigator.userAgent
           };
 
-          // TODO: Replace with your Google Sheets Web App URL for analytics
-          const ANALYTICS_SCRIPT_URL = 'YOUR_ANALYTICS_GOOGLE_SCRIPT_URL_HERE';
-
-          await fetch(ANALYTICS_SCRIPT_URL, {
+          await fetch('/api/visitors', {
             method: 'POST',
-            mode: 'no-cors',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(visitorData)
           });
 
-          console.log('Visitor data sent to analytics');
+          console.log('Visitor data sent to database');
         }
       } catch (error) {
         console.warn('Could not fetch or send guest location data:', error);
@@ -69,35 +64,33 @@ const ContactForm = ({ onSuccess }) => {
     setSubmitStatus(null);
 
     try {
-      // Use the guest data collected on page load
+      // Submit to database via API
       const formData = {
-        type: 'registration',
         name: data.name,
         phone: data.phone,
-        timestamp: new Date().toISOString(),
         // Guest data from ipapi (collected on page load)
-        ip: guestData?.ip || 'Unknown',
-        city: guestData?.city || 'Unknown',
-        region: guestData?.region || 'Unknown',
-        country: guestData?.country_name || 'Unknown',
-        countryCode: guestData?.country_code || 'Unknown',
-        timezone: guestData?.timezone || 'Unknown',
+        ip: guestData?.ip || null,
+        city: guestData?.city || null,
+        region: guestData?.region || null,
+        country: guestData?.country_name || null,
+        countryCode: guestData?.country_code || null,
+        timezone: guestData?.timezone || null,
         latitude: guestData?.latitude || null,
         longitude: guestData?.longitude || null,
-        org: guestData?.org || 'Unknown'
+        org: guestData?.org || null
       };
 
-      // TODO: Replace with your Google Sheets Web App URL for registrations
-      const REGISTRATION_SCRIPT_URL = 'YOUR_REGISTRATION_GOOGLE_SCRIPT_URL_HERE';
-
-      const response = await fetch(REGISTRATION_SCRIPT_URL, {
+      const response = await fetch('/api/submissions', {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData)
       });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit form');
+      }
 
       setSubmitStatus('success');
       if (onSuccess) onSuccess();

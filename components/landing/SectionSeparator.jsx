@@ -21,3 +21,4 @@ const SectionSeparator = ({ label, delay = 0 }) => {
 };
 
 export default SectionSeparator;
+

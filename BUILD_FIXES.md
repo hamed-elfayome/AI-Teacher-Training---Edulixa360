@@ -55,3 +55,103 @@ Ready to deploy! Run:
 ```bash
 sudo ./deploy.sh
 ```
+
+---
+
+# Production Deployment Fixes
+
+## Issues Encountered on Server
+
+### 1. Port Conflict (80/443 already in use) ❌
+- **Issue**: Traefik reverse proxy was already using ports 80 and 443
+- **Symptom**: Docker fails to bind nginx container to these ports
+- **Solution**: Use different ports and rely on Traefik for routing
+
+### 2. Missing SSL Certificates ❌
+- **Issue**: Nginx configured for HTTPS but certificates didn't exist
+- **Symptom**: Nginx fails to start due to missing certificate files
+- **Solution**: Either generate certificates first or use HTTP-only mode with Traefik handling SSL
+
+### 3. Seeding Script Failure ❌
+- **Issue**: Application startup failing because `scripts/seed.ts` couldn't be found/executed in container
+- **Symptom**: Container crashes on startup with "Cannot find module" error
+- **Root Causes**:
+  - `scripts/` directory not copied to Docker production image
+  - `tsx` package not available in production image (only in builder stage)
+  - Dependencies needed for seed script not included
+
+## Files That Need Modification
+
+### 1. `Dockerfile` - Missing Seed Script Dependencies
+Current Dockerfile doesn't include:
+- `scripts/` directory in production image
+- `tsx` package for running TypeScript
+- `bcryptjs` for password hashing
+
+### 2. `deploy.sh` - Hard-coded Configuration
+The script assumes:
+- Ports 80/443 are available
+- No existing reverse proxy
+- SSL certificates can be obtained via Let's Encrypt
+
+Needs options for:
+- Using with existing reverse proxy (Traefik)
+- Custom port configuration
+- Optional seeding
+
+### 4. Turbopack in Production Build ❌
+- **Issue**: Build script using `--turbopack` flag causing Prisma errors in production
+- **Symptom**: "the URL must start with the protocol `prisma://`" error
+- **Root Cause**: Turbopack is experimental and has issues with Prisma Client generation
+- **Solution**: Remove `--turbopack` from production build, keep it only for dev
+
+## Solutions Applied
+
+### ✅ Fixed Dockerfile
+Added missing dependencies to production image:
+```dockerfile
+COPY --from=builder /app/node_modules/bcryptjs ./node_modules/bcryptjs
+COPY --from=builder /app/node_modules/tsx ./node_modules/tsx
+COPY --from=builder /app/node_modules/.bin/tsx ./node_modules/.bin/tsx
+COPY --from=builder /app/scripts ./scripts
+```
+
+### ✅ Created `deploy-traefik.sh`
+New deployment script for servers with Traefik reverse proxy:
+- Uses custom internal ports (default: 3010)
+- No nginx/certbot containers needed
+- Traefik labels for automatic routing
+- Connects to external `traefik-public` network
+
+### ✅ Fixed Build Script
+Changed from:
+```json
+"build": "next build --turbopack"
+```
+To:
+```json
+"build": "prisma generate && next build"
+```
+
+## Deployment Options
+
+### Option 1: Fresh Server (use `deploy.sh`)
+- Installs nginx, certbot, handles SSL
+- Uses ports 80/443 directly
+- Good for dedicated server
+
+### Option 2: Server with Traefik (use `deploy-traefik.sh`)
+- Works with existing Traefik reverse proxy
+- Configurable internal port
+- Traefik handles SSL and routing
+- Good for multi-app servers
+
+### Usage with Traefik:
+```bash
+# Set custom port if needed (optional)
+export APP_PORT=3010
+export DOMAIN=ai-edulixa360.hamedelfayome.dev
+
+# Deploy
+sudo ./deploy-traefik.sh
+```
