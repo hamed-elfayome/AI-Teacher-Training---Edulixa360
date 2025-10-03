@@ -133,6 +133,7 @@ services:
       - "${APP_PORT}:3000"
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=traefik-public"
       - "traefik.http.routers.${APP_NAME}.rule=Host(\`${DOMAIN}\`)"
       - "traefik.http.routers.${APP_NAME}.entrypoints=websecure"
       - "traefik.http.routers.${APP_NAME}.tls=true"
