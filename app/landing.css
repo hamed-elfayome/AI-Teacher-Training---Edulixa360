@@ -1,0 +1,568 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Cairo', 'Inter', system-ui, sans-serif;
+  --edulixa-teal: #14b8a6;
+  --edulixa-coral: #f43f5e;
+  --edulixa-purple: #a855f7;
+  --edulixa-green: #22c55e;
+  
+  /* Logo Colors */
+  --logo-primary: #14b8a6;
+  --logo-secondary: #f43f5e;
+  
+  /* Consistent Dark Theme Variables */
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 173 58% 39%;
+  --primary-foreground: 355.7 100% 97.3%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 173 58% 39%;
+  --chart-1: 220 70% 50%;
+  --chart-2: 160 60% 45%;
+  --chart-3: 30 80% 55%;
+  --chart-4: 280 65% 60%;
+  --chart-5: 340 75% 55%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  background: linear-gradient(180deg, #020617 0%, #0a0f1a 25%, #0f172a 50%, #1e293b 75%, #334155 100%);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  direction: rtl;
+  text-align: right;
+  overflow-x: hidden;
+  background: linear-gradient(180deg, #020617 0%, #0a0f1a 25%, #0f172a 50%, #1e293b 75%, #334155 100%);
+  color: #ffffff;
+  font-family: 'Cairo', 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Professional scrollbar with Edulixa branding */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0f1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%);
+  border-radius: 4px;
+  border: 1px solid rgba(20, 184, 166, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #2dd4bf 0%, #14b8a6 100%);
+  box-shadow: 0 0 10px rgba(20, 184, 166, 0.3);
+}
+
+/* Enhanced Glass morphism - Premium Edulixa Style */
+.glass {
+  background: rgba(10, 15, 26, 0.8);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(20, 184, 166, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.glass-premium {
+  background: rgba(10, 15, 26, 0.9);
+  backdrop-filter: blur(32px);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  box-shadow: 0 16px 64px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(20, 184, 166, 0.1);
+}
+
+/* Enhanced hover effects */
+.hover-lift {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 25px 80px rgba(20, 184, 166, 0.4);
+}
+
+/* Refined Typography System */
+.text-display {
+  font-family: 'Cairo', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.text-heading {
+  font-family: 'Cairo', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+
+.text-body {
+  font-family: 'Cairo', system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.text-caption {
+  font-family: 'Cairo', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+/* Futuristic Wave Pattern */
+.wave-pattern {
+  background:
+    radial-gradient(ellipse 80% 50px at 50% -20%, rgba(92, 196, 184, 0.15), transparent),
+    radial-gradient(ellipse 80% 50px at 50% 100%, rgba(255, 107, 107, 0.1), transparent);
+  background-repeat: repeat-x;
+  background-size: 100% 200px;
+  animation: waveMove 15s ease-in-out infinite;
+}
+
+@keyframes waveMove {
+  0%, 100% {
+    background-position: 0 0, 0 100%;
+  }
+  50% {
+    background-position: 100% 0, -100% 100%;
+  }
+}
+
+/* Constellation Dots */
+.constellation {
+  background-image:
+    radial-gradient(2px 2px at 20% 30%, rgba(92, 196, 184, 0.6), transparent),
+    radial-gradient(2px 2px at 60% 70%, rgba(92, 196, 184, 0.4), transparent),
+    radial-gradient(1px 1px at 50% 50%, rgba(255, 107, 107, 0.5), transparent),
+    radial-gradient(2px 2px at 80% 10%, rgba(92, 196, 184, 0.5), transparent),
+    radial-gradient(1px 1px at 90% 60%, rgba(92, 196, 184, 0.3), transparent),
+    radial-gradient(1px 1px at 30% 80%, rgba(255, 107, 107, 0.4), transparent);
+  background-size: 200% 200%;
+  background-position: 50% 50%;
+  animation: twinkle 8s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Digital Rain */
+.digital-rain {
+  background: linear-gradient(transparent, rgba(92, 196, 184, 0.05) 50%, transparent),
+              linear-gradient(90deg, transparent, rgba(92, 196, 184, 0.03) 50%, transparent);
+  background-size: 30px 200%, 200% 30px;
+  background-position: 0 0, 0 0;
+  animation: rain 15s linear infinite;
+}
+
+@keyframes rain {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  100% {
+    background-position: 0 200%, 200% 0;
+  }
+}
+
+/* Energy Field */
+.energy-field {
+  background:
+    radial-gradient(circle at 20% 50%, rgba(92, 196, 184, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(255, 107, 107, 0.08) 0%, transparent 50%);
+  background-size: 100% 100%;
+  animation: energyPulse 6s ease-in-out infinite;
+}
+
+@keyframes energyPulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* Premium Gradient text with Edulixa colors */
+.gradient-text {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 25%, #a855f7 50%, #f43f5e 75%, #e11d48 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Animated gradient text */
+.gradient-text-animated {
+  background: linear-gradient(90deg, #14b8a6, #0d9488, #a855f7, #f43f5e, #e11d48, #14b8a6);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+/* Premium gradient text variants */
+.gradient-text-teal {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-coral {
+  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-purple {
+  background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Card with enhanced glow effect */
+.card-glow {
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+.card-glow::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, rgba(92, 196, 184, 0.3), rgba(255, 107, 107, 0.3));
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+  filter: blur(20px);
+}
+
+.card-glow:hover::before {
+  opacity: 1;
+}
+
+/* 3D Card effect */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.card-3d:hover {
+  transform: rotateY(5deg) rotateX(5deg) scale(1.05);
+}
+
+/* Animated border */
+.animated-border {
+  position: relative;
+  background: linear-gradient(#0B0F1A, #0B0F1A) padding-box,
+              linear-gradient(135deg, #5CC4B8, #FF6B6B) border-box;
+  border: 2px solid transparent;
+  border-radius: 16px;
+}
+
+/* Pulsing glow effect */
+.pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(92, 196, 184, 0.3), 0 0 40px rgba(92, 196, 184, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(92, 196, 184, 0.5), 0 0 60px rgba(92, 196, 184, 0.2);
+  }
+}
+
+/* Scanline effect (very subtle) */
+.scanline {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(92, 196, 184, 0.02) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Floating particles container */
+.particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Button hover effect */
+.btn-edulixa {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-edulixa::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-edulixa:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Holographic effect */
+.holographic {
+  background: linear-gradient(
+    135deg,
+    rgba(92, 196, 184, 0.1) 0%,
+    rgba(92, 196, 184, 0.05) 25%,
+    rgba(255, 107, 107, 0.05) 50%,
+    rgba(92, 196, 184, 0.05) 75%,
+    rgba(92, 196, 184, 0.1) 100%
+  );
+  background-size: 200% 200%;
+  animation: holographic-shift 10s ease infinite;
+}
+
+@keyframes holographic-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Loading shimmer effect */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(92, 196, 184, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Neon Glow Border Animation */
+.neon-border {
+  position: relative;
+}
+
+.neon-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, #5CC4B8, #FF6B6B, #5CC4B8);
+  background-size: 400% 400%;
+  border-radius: inherit;
+  opacity: 0;
+  z-index: -1;
+  filter: blur(10px);
+  animation: neonGlow 3s ease-in-out infinite;
+}
+
+.neon-border:hover::before {
+  opacity: 0.6;
+}
+
+@keyframes neonGlow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Section divider */
+.section-divider {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(92, 196, 184, 0.5) 50%,
+    transparent 100%
+  );
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .card-3d:hover {
+    transform: scale(1.02);
+  }
+}
+
+/* Rotate Animation for Hexagon */
+.animate-spin-slow {
+  animation: spin 20s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Scan Line Animation */
+@keyframes scan {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+.animate-scan {
+  animation: scan 2s ease-in-out infinite;
+}
+
+
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 20 14.3% 4.1%;
+    --card: 0 0% 100%;
+    --card-foreground: 20 14.3% 4.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14.3% 4.1%;
+    --primary: 24 9.8% 10%;
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 60 4.8% 95.9%;
+    --secondary-foreground: 24 9.8% 10%;
+    --muted: 60 4.8% 95.9%;
+    --muted-foreground: 25 5.3% 44.7%;
+    --accent: 60 4.8% 95.9%;
+    --accent-foreground: 24 9.8% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 20 5.9% 90%;
+    --input: 20 5.9% 90%;
+    --ring: 20 14.3% 4.1%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 60 9.1% 97.8%;
+    --card: 20 14.3% 4.1%;
+    --card-foreground: 60 9.1% 97.8%;
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 60 9.1% 97.8%;
+    --primary: 60 9.1% 97.8%;
+    --primary-foreground: 24 9.8% 10%;
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 60 9.1% 97.8%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
+    --ring: 24 5.7% 82.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

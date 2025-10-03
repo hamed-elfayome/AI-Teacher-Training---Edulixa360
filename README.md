@@ -1,36 +1,261 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Teacher Training - Next.js Full-Stack
+
+A modern full-stack application for AI teacher training with analytics dashboard built with Next.js 15, TypeScript, Prisma, and PostgreSQL.
+
+## Features
+
+### Landing Page (SSR)
+- 🌍 Arabic RTL support with Cairo font
+- 🎨 Same beautiful design from original React version
+- ⚡ Server-side rendering for optimal SEO
+- 📊 Visitor tracking with geolocation
+- 📝 Contact form with location data
+
+### Admin Dashboard (Dark Mode)
+- 🔐 Secure authentication with NextAuth.js
+- 📈 Analytics overview with charts
+- 🌎 Country-based statistics
+- 📋 Submissions management
+- 🔍 Search and filter functionality
+- 📥 Export to CSV
+- 🎨 Dark themed UI with shadcn/ui
+
+## Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Database**: PostgreSQL with Prisma ORM
+- **Auth**: NextAuth.js v5
+- **UI**: Tailwind CSS + shadcn/ui
+- **Animations**: Framer Motion
+- **Deployment**: Docker + Docker Compose
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20+
+- Docker & Docker Compose (for containerized setup)
+- PostgreSQL (if running locally without Docker)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   cd ai-teacher-training-nextjs
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env
+   ```
+
+   Update `.env` with your values:
+   ```
+   DATABASE_URL="postgresql://user:password@localhost:5432/ai_teacher_training?schema=public"
+   NEXTAUTH_URL="http://localhost:3000"
+   NEXTAUTH_SECRET="your-secret-key-here"
+   ADMIN_EMAIL="admin@example.com"
+   ADMIN_PASSWORD="your-password"
+   ```
+
+4. **Set up the database**
+   ```bash
+   npx prisma migrate dev
+   npx prisma generate
+   npx tsx scripts/seed.ts  # Creates admin user
+   ```
+
+5. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000)
+
+## Docker Deployment
+
+### Using Docker Compose (Recommended)
+
+1. **Build and run containers**
+   ```bash
+   docker-compose up -d
+   ```
+
+   This will:
+   - Start PostgreSQL on port 5432
+   - Build and run the Next.js app on port 3000
+   - Run database migrations automatically
+
+2. **Create admin user**
+   ```bash
+   docker-compose exec app npx tsx scripts/seed.ts
+   ```
+
+3. **View logs**
+   ```bash
+   docker-compose logs -f app
+   ```
+
+4. **Stop containers**
+   ```bash
+   docker-compose down
+   ```
+
+### Manual Docker Build
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Build the image
+docker build -t ai-teacher-training .
+
+# Run with environment variables
+docker run -p 3000:3000 \
+  -e DATABASE_URL="your-db-url" \
+  -e NEXTAUTH_URL="http://localhost:3000" \
+  -e NEXTAUTH_SECRET="your-secret" \
+  ai-teacher-training
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+ai-teacher-training-nextjs/
+├── app/
+│   ├── (auth)/
+│   │   └── login/              # Admin login page
+│   ├── dashboard/
+│   │   ├── page.tsx            # Analytics dashboard
+│   │   ├── submissions/        # Submissions table
+│   │   └── layout.tsx          # Dashboard layout
+│   ├── api/
+│   │   ├── auth/               # NextAuth endpoints
+│   │   ├── submissions/        # Submissions CRUD
+│   │   ├── visitors/           # Visitor tracking
+│   │   └── analytics/          # Analytics data
+│   ├── page.tsx                # Landing page (SSR)
+│   ├── layout.tsx              # Root layout
+│   └── globals.css             # Global styles
+├── components/
+│   ├── landing/                # Landing page components
+│   └── ui/                     # shadcn/ui components
+├── lib/
+│   ├── auth.ts                 # NextAuth config
+│   ├── prisma.ts               # Prisma client
+│   └── utils.ts                # Utilities
+├── prisma/
+│   └── schema.prisma           # Database schema
+├── scripts/
+│   └── seed.ts                 # Database seeding
+├── Dockerfile                  # Docker configuration
+├── docker-compose.yml          # Docker Compose setup
+└── middleware.ts               # Auth middleware
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Database Schema
 
-## Learn More
+### User
+- Admin authentication
 
-To learn more about Next.js, take a look at the following resources:
+### Visitor
+- Page visitor tracking
+- Geolocation data
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Submission
+- Form submissions
+- Contact information
+- Location data
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## API Routes
 
-## Deploy on Vercel
+- `POST /api/visitors` - Track visitor
+- `POST /api/submissions` - Create submission
+- `GET /api/submissions` - List submissions (auth required)
+- `GET /api/analytics` - Get analytics (auth required)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Admin Dashboard
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Access
+1. Navigate to `/login`
+2. Use credentials from `.env`:
+   - Email: `ADMIN_EMAIL`
+   - Password: `ADMIN_PASSWORD`
+
+### Features
+- **Analytics**: Total visitors, submissions, conversion rate
+- **Countries**: Top visitor and submission countries
+- **Submissions**: Searchable and filterable table
+- **Export**: Download data as CSV
+
+## Environment Variables
+
+Required environment variables:
+
+```env
+# Database
+DATABASE_URL="postgresql://..."
+
+# NextAuth
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="random-secret-key"
+
+# Admin Credentials
+ADMIN_EMAIL="admin@example.com"
+ADMIN_PASSWORD="secure-password"
+```
+
+## Production Deployment
+
+### Build for Production
+
+```bash
+npm run build
+npm start
+```
+
+### Docker Production
+
+```bash
+# Build optimized image
+docker build -t ai-teacher-training:prod .
+
+# Run in production mode
+docker-compose up -d
+```
+
+## Troubleshooting
+
+### Database Connection Issues
+- Ensure PostgreSQL is running
+- Check `DATABASE_URL` is correct
+- Run `npx prisma migrate reset` to reset database
+
+### Authentication Issues
+- Verify `NEXTAUTH_SECRET` is set
+- Clear browser cookies
+- Check admin user exists: `npx prisma studio`
+
+### Docker Issues
+- Run `docker-compose down -v` to remove volumes
+- Rebuild: `docker-compose build --no-cache`
+
+## Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npx tsx scripts/seed.ts` - Seed admin user
+- `npx prisma studio` - Open Prisma Studio
+- `npx prisma migrate dev` - Create migration
+
+## License
+
+MIT
+
+## Support
+
+For issues and questions, please open an issue on GitHub.

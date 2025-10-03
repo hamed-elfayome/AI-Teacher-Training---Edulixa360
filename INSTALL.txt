@@ -1,0 +1,113 @@
+================================================================================
+   AI TEACHER TRAINING - INSTALLATION INSTRUCTIONS
+================================================================================
+
+📦 WHAT YOU HAVE
+----------------
+A complete Next.js full-stack application with:
+  ✓ Landing page with SSR (same design as React version)
+  ✓ Dark-themed admin dashboard
+  ✓ Analytics and submissions management
+  ✓ PostgreSQL database
+  ✓ Docker deployment with SSL
+
+================================================================================
+
+🚀 PRODUCTION DEPLOYMENT (ONE COMMAND)
+---------------------------------------
+
+1. On your server, clone this repository:
+   git clone <repo-url> ai-teacher-training-nextjs
+   cd ai-teacher-training-nextjs
+
+2. Make scripts executable:
+   chmod +x deploy.sh update.sh
+
+3. Run deployment:
+   sudo ./deploy.sh
+
+   The script will:
+   - Install Docker, Nginx, Certbot
+   - Ask for admin email and password
+   - Set up SSL for ai-edulixa360.hamedelfayome.dev
+   - Deploy everything automatically
+
+4. Access your site:
+   https://ai-edulixa360.hamedelfayome.dev
+
+================================================================================
+
+🔄 UPDATING (ONE COMMAND)
+--------------------------
+
+To pull latest changes and redeploy:
+   sudo ./update.sh
+
+================================================================================
+
+💻 LOCAL DEVELOPMENT
+---------------------
+
+1. Install dependencies:
+   npm install
+
+2. Setup environment:
+   cp .env.example .env
+   # Edit .env with your database URL
+
+3. Setup database:
+   npm run db:migrate
+   npm run db:seed
+
+4. Run development server:
+   npm run dev
+
+5. Open: http://localhost:3000
+
+================================================================================
+
+📋 REQUIREMENTS
+---------------
+
+Production Server:
+  - Ubuntu 20.04+ or Debian 11+
+  - 2GB RAM minimum
+  - Domain DNS pointing to server IP
+  - Ports 80 and 443 open
+
+Local Development:
+  - Node.js 20+
+  - PostgreSQL database
+
+================================================================================
+
+📚 DOCUMENTATION
+----------------
+
+Quick Start:     QUICKSTART.md
+Deployment:      DEPLOYMENT.md
+Full README:     README.md
+Setup Guide:     SETUP.md
+
+================================================================================
+
+🔑 ADMIN ACCESS
+---------------
+
+After deployment, login at:
+  https://ai-edulixa360.hamedelfayome.dev/login
+
+Use the email and password you entered during deploy.sh
+
+================================================================================
+
+🆘 HELP
+-------
+
+View logs:           docker-compose -f docker-compose.prod.yml logs -f
+Restart services:    docker-compose -f docker-compose.prod.yml restart
+Stop all:            docker-compose -f docker-compose.prod.yml down
+
+Full troubleshooting guide in DEPLOYMENT.md
+
+================================================================================
