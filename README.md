@@ -1,212 +1,98 @@
-# AI Teacher Training - Next.js Application
+# AI Teacher Training Platform 🎓
 
-Complete Next.js application with landing page, admin dashboard, and database integration.
+A comprehensive Next.js application for AI teacher training with an integrated analytics dashboard and admin panel.
 
-## 🚀 Quick Deploy
-
-```bash
-# On your server (with Traefik already running)
-git clone <your-repo-url>
-cd ai-teacher-training-nextjs
-sudo ./deploy-traefik.sh
-```
-
-That's it! Your site will be live at https://ai-edulixa360.hamedelfayome.dev
-
----
+[![Next.js](https://img.shields.io/badge/Next.js-15.5.4-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.0-38B2AC)](https://tailwindcss.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791)](https://www.postgresql.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-6.16.3-2D3748)](https://www.prisma.io/)
 
 ## ✨ Features
 
 ### Landing Page
-- **Identical to React Version**: Dark gradient background, custom colors, animations
-- **Arabic RTL Support**: Full right-to-left layout
-- **Responsive Design**: Works on all devices
-- **Contact Form**: Collects visitor data and submissions
-- **Analytics Integration**: Tracks visitors automatically
+- 🎨 Modern, responsive design with dark gradient theme
+- 🌐 Arabic RTL support with Cairo font
+- 📱 Fully mobile-optimized
+- ✉️ Interactive contact form
+- 🎭 Smooth animations with Framer Motion
+- 🔄 Session-based visitor tracking
 
 ### Admin Dashboard
-- **Login System**: Secure authentication with NextAuth
-- **Analytics Overview**: View visitors, submissions, conversion rates
-- **Geographic Data**: See where visitors are from
-- **Submissions Management**: View and filter all form submissions
-- **Real-time Updates**: Data updates immediately
+- 📊 **Rich Analytics**
+  - Total visitors and submissions (all-time + period-based)
+  - Conversion rate tracking
+  - Device breakdown (Mobile/Desktop/Tablet)
+  - Geographic insights (top countries)
+  - Daily trends visualization
+  - Recent activity monitoring
+- 🔐 Secure authentication with NextAuth
+- 📋 Submissions management with search and filters
+- 📥 CSV export functionality
+- 🎯 Period selector (7/30/90 days)
 
-### Technical Stack
-- **Next.js 15.5.4** - React framework
-- **PostgreSQL** - Database via Prisma
-- **Tailwind CSS v3** - Styling
-- **Traefik** - Reverse proxy with automatic SSL
-- **Docker** - Containerized deployment
-
----
-
-## 📋 Prerequisites
-
-### On Your Server:
-
-1. **Docker & Docker Compose** installed
-2. **Traefik** running with:
-   - `traefik-public` network created
-   - Let's Encrypt configured for SSL
-   - Listening on ports 80/443
-3. **DNS** pointing to your server:
-   ```
-   ai-edulixa360.hamedelfayome.dev → Your Server IP
-   ```
+### Technical Features
+- ⚡ Built with Next.js 15 App Router
+- 🗄️ PostgreSQL database with Prisma ORM
+- 🔄 Automatic database migrations
+- 🐳 Docker containerization
+- 🔒 SSL/HTTPS via Traefik or Nginx
+- 📈 Real-time analytics tracking
+- 🎨 Tailwind CSS for styling
+- 🔐 Secure admin authentication
 
 ---
 
-## 🛠️ Deployment
+## 🚀 Quick Start
 
-### Option 1: Using deploy-traefik.sh (Recommended for Traefik)
+### Prerequisites
+
+- Node.js 18+ and npm
+- PostgreSQL database (or Docker)
+- Git
+
+### Local Development
 
 ```bash
-# Clone repository
-git clone <repo-url>
+# 1. Clone the repository
+git clone <repository-url>
 cd ai-teacher-training-nextjs
 
-# Deploy
-sudo ./deploy-traefik.sh
+# 2. Install dependencies
+npm install
 
-# During deployment, you'll be asked for:
-# - Admin email
-# - Admin password (enter twice)
+# 3. Set up environment variables
+cp .env.example .env
+# Edit .env with your database credentials
 
-# Watch deployment
-docker-compose -f docker-compose.prod.yml logs -f app
+# 4. Set up database
+npx prisma generate
+npx prisma migrate dev
+npx prisma db seed
+
+# 5. Start development server
+npm run dev
+
+# 6. Open http://localhost:3000
 ```
 
-### Option 2: Using deploy.sh (Fresh Server with nginx)
+### Production Deployment
+
+#### Option 1: With Traefik (Recommended for multi-app servers)
 
 ```bash
+# Deploy with Traefik reverse proxy
+sudo ./deploy-traefik.sh
+```
+
+#### Option 2: Standalone with Nginx
+
+```bash
+# Deploy with built-in Nginx and SSL
 sudo ./deploy.sh
 ```
 
-This installs nginx, certbot, and handles SSL automatically.
-
----
-
-## 🔧 Configuration
-
-### Default Settings
-
-| Setting | Default Value | Change Via |
-|---------|---------------|------------|
-| Domain | `ai-edulixa360.hamedelfayome.dev` | `export DOMAIN=your-domain.com` |
-| Internal Port | `3010` | `export APP_PORT=3011` |
-| Admin Email | (asked during deploy) | Deploy script prompt |
-| Database | PostgreSQL 16 | docker-compose.prod.yml |
-
-### Custom Configuration
-
-```bash
-# Use custom domain
-export DOMAIN="your-custom-domain.com"
-
-# Use custom internal port
-export APP_PORT=3011
-
-# Deploy
-sudo ./deploy-traefik.sh
-```
-
----
-
-## 📊 Usage
-
-### Access the Site
-
-- **Landing Page**: https://ai-edulixa360.hamedelfayome.dev
-- **Admin Login**: https://ai-edulixa360.hamedelfayome.dev/login
-- **Dashboard**: https://ai-edulixa360.hamedelfayome.dev/dashboard
-- **Submissions**: https://ai-edulixa360.hamedelfayome.dev/dashboard/submissions
-
-### Admin Login
-
-Use the credentials you set during deployment:
-- Email: The email you entered
-- Password: The password you entered
-
----
-
-## 🐛 Troubleshooting
-
-### NextAuth UntrustedHost Error
-
-**Error**: `[auth][error] UntrustedHost: Host must be trusted`
-
-**Quick Fix**:
-```bash
-sudo ./fix-auth-trust.sh
-```
-
-**Manual Fix**:
-```bash
-echo 'AUTH_TRUST_HOST="true"' >> .env.production
-docker-compose -f docker-compose.prod.yml restart app
-```
-
-> **Note**: This is now included in both deployment scripts automatically.
-
-### Site Returns 504 Gateway Timeout
-
-**Cause**: Traefik can't reach the container
-
-**Fix**:
-```bash
-# Check if containers are on the same network
-docker inspect ai-teacher-app | grep Networks
-
-# Should show: traefik-public
-
-# If missing, the deploy script will fix it automatically
-```
-
-### Database Password Error
-
-**Cause**: Old postgres volume with different password
-
-**Fix**:
-```bash
-docker-compose -f docker-compose.prod.yml down
-docker volume rm ai-teacher-training---edulixa360_postgres_data
-sudo ./deploy-traefik.sh
-```
-
-### Migration Failed
-
-**Fix**:
-```bash
-docker-compose -f docker-compose.prod.yml exec app npx prisma migrate deploy
-```
-
-### Can't Access Admin Dashboard
-
-**Fix**:
-```bash
-# Reset admin password by re-seeding
-docker-compose -f docker-compose.prod.yml exec app node scripts/seed.js
-```
-
-### Site Not Accessible via Domain
-
-**Checks**:
-```bash
-# 1. DNS resolves correctly
-dig ai-edulixa360.hamedelfayome.dev
-
-# 2. Traefik is running
-docker ps | grep traefik
-
-# 3. App is running
-docker ps | grep ai-teacher-app
-
-# 4. Test local connection
-curl http://localhost:3010
-
-# 5. Check Traefik logs
-docker logs traefik --tail=50
-```
+See [QUICK_START.md](QUICK_START.md) for detailed deployment instructions.
 
 ---
 
@@ -214,154 +100,265 @@ docker logs traefik --tail=50
 
 ```
 ai-teacher-training-nextjs/
-├── app/                          # Next.js app directory
-│   ├── (auth)/login/            # Login page
-│   ├── api/                     # API routes
-│   │   ├── analytics/           # Analytics endpoint
-│   │   ├── submissions/         # Form submissions
-│   │   └── visitors/            # Visitor tracking
-│   ├── dashboard/               # Admin dashboard
-│   ├── globals.css              # Global styles (from React)
-│   └── page.tsx                 # Landing page
+├── app/                      # Next.js App Router
+│   ├── (auth)/              # Authentication routes
+│   ├── api/                 # API routes
+│   │   ├── analytics/       # Analytics endpoint
+│   │   ├── auth/            # NextAuth endpoints
+│   │   ├── submissions/     # Form submissions API
+│   │   └── visitors/        # Visitor tracking API
+│   ├── dashboard/           # Admin dashboard
+│   ├── globals.css          # Global styles
+│   └── page.tsx             # Landing page
 ├── components/
-│   └── landing/                 # Landing page components (from React)
-│       ├── Hero.jsx
-│       ├── ContactForm.jsx      # Database integration
-│       └── ...
+│   ├── landing/             # Landing page components
+│   └── ui/                  # Reusable UI components
+├── lib/
+│   ├── auth.ts              # Authentication configuration
+│   ├── prisma.ts            # Prisma client
+│   └── utils.ts             # Utility functions
 ├── prisma/
-│   ├── schema.prisma            # Database schema
-│   └── migrations/              # Database migrations
+│   ├── schema.prisma        # Database schema
+│   └── migrations/          # Database migrations
+├── public/                  # Static assets
 ├── scripts/
-│   └── seed.ts                  # Admin user seeding
-├── public/
-│   └── Logo 414x143.png         # Logo file
-├── Dockerfile                   # Production build
-├── deploy-traefik.sh            # Deployment script (Traefik)
-├── deploy.sh                    # Deployment script (nginx)
-└── docker-compose.prod.yml      # Generated during deployment
+│   └── seed.ts              # Database seeding script
+├── docs/                    # Additional documentation
+├── deploy-traefik.sh        # Traefik deployment script
+├── deploy.sh                # Nginx deployment script
+├── setup.sh                 # Local setup script
+├── update.sh                # Production update script
+└── README.md                # This file
 ```
 
 ---
 
-## 🔄 Updates
+## 🗄️ Database Schema
 
-### Update Code
+The application uses PostgreSQL with the following models:
+
+- **User**: Admin users for dashboard access
+- **Visitor**: Tracks landing page visitors (session-based)
+- **Submission**: Stores contact form submissions
+
+See `prisma/schema.prisma` for the complete schema.
+
+---
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Create a `.env` file (or `.env.production` for deployment):
 
 ```bash
-cd /path/to/ai-teacher-training-nextjs
-git pull
-docker-compose -f docker-compose.prod.yml down
-docker-compose -f docker-compose.prod.yml up -d --build
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
+
+# NextAuth
+NEXTAUTH_URL="https://yourdomain.com"
+NEXTAUTH_SECRET="your-secret-key"
+AUTH_TRUST_HOST="true"
+
+# Admin Credentials (for seeding)
+ADMIN_EMAIL="admin@example.com"
+ADMIN_PASSWORD="secure-password"
+```
+
+### Deployment Configuration
+
+Edit `deploy-traefik.sh` or `deploy.sh` to customize:
+- Domain name
+- Internal ports
+- SSL settings
+- Database credentials
+
+---
+
+## 📊 Analytics & Tracking
+
+### Visitor Tracking
+- **Session-based**: Counts unique browser sessions
+- Uses `sessionStorage` to prevent duplicate counts
+- Captures: IP, location, device, browser info
+
+### Analytics Dashboard
+View comprehensive metrics:
+- Total visitors (all-time + period)
+- Form submissions
+- Conversion rates
+- Device breakdown
+- Geographic distribution
+- Daily trends
+- Recent activity
+
+### Database Management
+
+Clear analytics data when needed:
+
+```bash
+# See all commands
+cat docs/CLEAR_DATABASE.md
+
+# Quick clear (on server)
+docker exec ai-teacher-postgres psql -U aiuser -d ai_teacher_training \
+  -c "DELETE FROM \"Visitor\"; DELETE FROM \"Submission\";"
+```
+
+---
+
+## 🛠️ Development
+
+### Available Scripts
+
+```bash
+# Development
+npm run dev              # Start dev server
+npm run build            # Build for production
+npm run start            # Start production server
+
+# Database
+npm run db:push          # Push schema changes
+npm run db:seed          # Seed database
+npm run db:studio        # Open Prisma Studio
+
+# Linting
+npm run lint             # Run ESLint
 ```
 
 ### Database Migrations
 
 ```bash
-# After adding new models to schema.prisma
-npx prisma migrate dev --name your_migration_name
+# Create a new migration
+npx prisma migrate dev --name migration_name
 
-# On server
-docker-compose -f docker-compose.prod.yml exec app npx prisma migrate deploy
+# Apply migrations in production
+npx prisma migrate deploy
+
+# Reset database (dev only)
+npx prisma migrate reset
 ```
 
 ---
 
-## 📈 Monitoring
+## 🐳 Docker Deployment
 
-### View Logs
+### Using Docker Compose
 
 ```bash
-# All logs
-docker-compose -f docker-compose.prod.yml logs -f
+# Build and start
+docker-compose -f docker-compose.prod.yml up -d --build
 
-# App only
+# View logs
 docker-compose -f docker-compose.prod.yml logs -f app
 
-# Database only
-docker-compose -f docker-compose.prod.yml logs -f postgres
+# Stop services
+docker-compose -f docker-compose.prod.yml down
 
-# Last 100 lines
-docker-compose -f docker-compose.prod.yml logs --tail=100
-```
-
-### Check Status
-
-```bash
-# Container status
-docker-compose -f docker-compose.prod.yml ps
-
-# Resource usage
-docker stats ai-teacher-app ai-teacher-postgres
-
-# Health check
-curl -I https://ai-edulixa360.hamedelfayome.dev
-```
-
----
-
-## 🗄️ Database Management
-
-### Prisma Studio (GUI)
-
-```bash
-docker-compose -f docker-compose.prod.yml exec app npx prisma studio
-
-# Access at: http://localhost:5555
-```
-
-### Backup Database
-
-```bash
-docker exec ai-teacher-postgres pg_dump -U aiuser ai_teacher_training > backup.sql
-```
-
-### Restore Database
-
-```bash
-cat backup.sql | docker exec -i ai-teacher-postgres psql -U aiuser -d ai_teacher_training
+# Rebuild after code changes
+docker-compose -f docker-compose.prod.yml up -d --build app
 ```
 
 ---
 
 ## 🔐 Security
 
-- **HTTPS Only**: Traefik handles SSL via Let's Encrypt
-- **Password Hashing**: bcryptjs with 12 rounds
-- **Secure Secrets**: Auto-generated during deployment
-- **Environment Variables**: Stored in `.env.production`
-- **Non-root Container**: Runs as `nextjs` user
+- ✅ Password hashing with bcryptjs
+- ✅ Secure session management with NextAuth
+- ✅ Environment variable protection
+- ✅ SQL injection prevention via Prisma
+- ✅ HTTPS/SSL enforcement
+- ✅ Non-root Docker containers
 
 ---
 
-## 🤝 Support
+## 🌐 Localization
 
-For issues or questions:
-1. Check the troubleshooting section above
-2. Review `DEPLOYMENT_READY.md` for detailed fixes
-3. Check container logs for errors
+The landing page supports:
+- **Arabic (RTL)**: Primary language
+- **English**: Secondary elements
+- Custom Cairo font for Arabic text
+- Inter font for English text
+
+---
+
+## 📚 Documentation
+
+- [Quick Start Guide](QUICK_START.md) - Fast deployment instructions
+- [Troubleshooting Guide](TROUBLESHOOTING.md) - Common issues and solutions
+- [Visitor Tracking](docs/VISITOR_TRACKING.md) - Session-based tracking details
+- [Database Management](docs/CLEAR_DATABASE.md) - Database cleanup commands
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Port Conflicts**
+```bash
+# Use custom port
+export APP_PORT=3011
+sudo ./deploy-traefik.sh
+```
+
+**Database Connection Errors**
+```bash
+# Check container is running
+docker ps | grep postgres
+
+# View logs
+docker logs ai-teacher-postgres
+```
+
+**Build Errors**
+```bash
+# Clear cache and rebuild
+docker-compose -f docker-compose.prod.yml build --no-cache
+```
+
+See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for more solutions.
 
 ---
 
 ## 📝 License
 
-Private project - All rights reserved
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ---
 
-## ✅ Deployment Checklist
+## 👨‍💻 Author
 
-- [ ] Server has Docker & Docker Compose
-- [ ] Traefik is running with `traefik-public` network
-- [ ] DNS points to server IP
-- [ ] Ports 80/443 available for Traefik
-- [ ] Run `sudo ./deploy-traefik.sh`
-- [ ] Enter admin credentials when prompted
-- [ ] Wait for deployment to complete
-- [ ] Test: `curl https://ai-edulixa360.hamedelfayome.dev`
-- [ ] Login to dashboard
-- [ ] Verify analytics tracking
+**Hamed Elfayome**  
+🌐 [hamedelfayome.dev](https://hamedelfayome.dev)
 
 ---
 
-**Last Updated**: October 2025  
-**Deployment Status**: ✅ Production Ready
+## 🙏 Acknowledgments
+
+- Next.js team for the amazing framework
+- Shadcn/ui for beautiful components
+- Vercel for deployment platform
+- All contributors and users
+
+---
+
+## 📞 Support
+
+For support, email support@edulixa360.com or open an issue in the repository.
+
+---
+
+**Made with ❤️ for educators worldwide**
