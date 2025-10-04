@@ -51,13 +51,13 @@ export default function SubmissionsPage() {
   };
 
   const exportToCSV = () => {
-    const headers = ["Name", "Phone", "Country", "City", "Date"];
+    const headers = ["Date", "Name", "Phone", "City", "Country"];
     const rows = submissions.map((sub) => [
+      new Date(sub.createdAt).toLocaleString(),
       sub.name,
       sub.phone,
-      sub.country || "",
       sub.city || "",
-      new Date(sub.createdAt).toLocaleString(),
+      sub.country || "",
     ]);
 
     const csvContent =
@@ -126,38 +126,40 @@ export default function SubmissionsPage() {
             {loading ? (
               <div className="p-8 text-center">Loading...</div>
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Phone</TableHead>
-                    <TableHead>Country</TableHead>
-                    <TableHead>City</TableHead>
-                    <TableHead>Date</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {submissions.length === 0 ? (
+              <div className="overflow-x-auto" dir="ltr">
+                <Table>
+                  <TableHeader>
                     <TableRow>
-                      <TableCell colSpan={5} className="text-center text-muted-foreground">
-                        No submissions found
-                      </TableCell>
+                      <TableHead className="text-left">Date</TableHead>
+                      <TableHead className="text-left">Name</TableHead>
+                      <TableHead className="text-left">Phone</TableHead>
+                      <TableHead className="text-left">City</TableHead>
+                      <TableHead className="text-left">Country</TableHead>
                     </TableRow>
-                  ) : (
-                    submissions.map((submission) => (
-                      <TableRow key={submission.id}>
-                        <TableCell className="font-medium">{submission.name}</TableCell>
-                        <TableCell>{submission.phone}</TableCell>
-                        <TableCell>{submission.country || "N/A"}</TableCell>
-                        <TableCell>{submission.city || "N/A"}</TableCell>
-                        <TableCell>
-                          {new Date(submission.createdAt).toLocaleDateString()}
+                  </TableHeader>
+                  <TableBody>
+                    {submissions.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={5} className="text-center text-muted-foreground">
+                          No submissions found
                         </TableCell>
                       </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
+                    ) : (
+                      submissions.map((submission) => (
+                        <TableRow key={submission.id}>
+                          <TableCell className="text-left">
+                            {new Date(submission.createdAt).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell className="font-medium text-left">{submission.name}</TableCell>
+                          <TableCell className="text-left">{submission.phone}</TableCell>
+                          <TableCell className="text-left">{submission.city || "N/A"}</TableCell>
+                          <TableCell className="text-left">{submission.country || "N/A"}</TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
             )}
           </CardContent>
         </Card>
