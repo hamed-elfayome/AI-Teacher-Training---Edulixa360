@@ -1,0 +1,25 @@
+═══════════════════════════════════════════════════════════════
+  FIX DASHBOARD 500 ERROR
+═══════════════════════════════════════════════════════════════
+
+The dashboard is now accessible but the analytics API is returning a 500 error.
+This has been fixed in the code.
+
+COPY & PASTE THIS ON YOUR SERVER:
+───────────────────────────────────────────────────────────────
+
+cd /root/ai-teacher-training-nextjs && \
+docker-compose -f docker-compose.prod.yml up -d --build app && \
+echo "" && \
+echo "🔄 Rebuilding... (2-3 minutes)" && \
+echo "✅ This will fix the dashboard analytics error"
+
+───────────────────────────────────────────────────────────────
+
+After rebuild, your dashboard will show:
+✅ Total Visitors count
+✅ Form Submissions count
+✅ Conversion Rate
+✅ Top countries breakdown
+
+═══════════════════════════════════════════════════════════════

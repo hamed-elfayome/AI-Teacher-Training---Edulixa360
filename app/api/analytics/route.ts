@@ -30,53 +30,52 @@ export async function GET(request: NextRequest) {
     }
 
     // Get total visitors and submissions
-    const [totalVisitors, totalSubmissions, visitorsByCountry, submissionsByCountry] = await Promise.all([
-      prisma.visitor.count(),
-      prisma.submission.count(),
-      prisma.visitor.groupBy({
-        by: ['country'],
-        _count: true,
-        orderBy: {
-          _count: {
-            country: 'desc'
-          }
-        },
-        take: 10,
-      }),
-      prisma.submission.groupBy({
-        by: ['country'],
-        _count: true,
-        orderBy: {
-          _count: {
-            country: 'desc'
-          }
-        },
-        take: 10,
-      }),
-    ]);
+    const totalVisitors = await prisma.visitor.count();
+    const totalSubmissions = await prisma.submission.count();
 
-    // Get daily visitors trend
-    const dailyVisitors = await prisma.$queryRaw`
-      SELECT DATE(created_at) as date, COUNT(*) as count
-      FROM "Visitor"
-      WHERE created_at >= ${startDate}
-      GROUP BY DATE(created_at)
-      ORDER BY date ASC
-    `;
+    // Get visitors by country
+    const visitorsByCountry = await prisma.visitor.groupBy({
+      by: ['country'],
+      _count: {
+        country: true,
+      },
+      orderBy: {
+        _count: {
+          country: 'desc'
+        }
+      },
+      take: 10,
+    });
 
-    // Get daily submissions trend
-    const dailySubmissions = await prisma.$queryRaw`
-      SELECT DATE(created_at) as date, COUNT(*) as count
-      FROM "Submission"
-      WHERE created_at >= ${startDate}
-      GROUP BY DATE(created_at)
-      ORDER BY date ASC
-    `;
+    // Get submissions by country
+    const submissionsByCountry = await prisma.submission.groupBy({
+      by: ['country'],
+      _count: {
+        country: true,
+      },
+      orderBy: {
+        _count: {
+          country: 'desc'
+        }
+      },
+      take: 10,
+    });
 
     // Calculate conversion rate
     const conversionRate = totalVisitors > 0
       ? ((totalSubmissions / totalVisitors) * 100).toFixed(2)
       : "0";
+
+    // Format country data for response
+    const formattedVisitors = visitorsByCountry.map(item => ({
+      country: item.country || 'Unknown',
+      _count: item._count.country,
+    }));
+
+    const formattedSubmissions = submissionsByCountry.map(item => ({
+      country: item.country || 'Unknown',
+      _count: item._count.country,
+    }));
 
     return NextResponse.json({
       overview: {
@@ -85,12 +84,8 @@ export async function GET(request: NextRequest) {
         conversionRate: parseFloat(conversionRate),
       },
       countries: {
-        visitors: visitorsByCountry,
-        submissions: submissionsByCountry,
-      },
-      trends: {
-        visitors: dailyVisitors,
-        submissions: dailySubmissions,
+        visitors: formattedVisitors,
+        submissions: formattedSubmissions,
       },
     });
   } catch (error) {

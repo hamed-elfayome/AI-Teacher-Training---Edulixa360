@@ -133,6 +133,19 @@ To:
 "build": "prisma generate && next build"
 ```
 
+### ✅ Fixed NextAuth UntrustedHost Error
+- **Issue**: NextAuth throws `UntrustedHost` error behind reverse proxy
+- **Symptom**: `Host must be trusted. URL was: https://ai-edulixa360.hamedelfayome.dev/api/auth/session`
+- **Root Cause**: NextAuth doesn't trust the host when behind Traefik/nginx
+- **Solution**: Added `AUTH_TRUST_HOST="true"` to environment variables
+
+Both deployment scripts now include:
+```bash
+AUTH_TRUST_HOST="true"
+```
+
+Quick fix script available: `./fix-auth-trust.sh`
+
 ## Deployment Options
 
 ### Option 1: Fresh Server (use `deploy.sh`)

@@ -1,0 +1,35 @@
+═══════════════════════════════════════════════════════════════
+  COPY & PASTE THIS ON YOUR SERVER TO FIX THE AUTH ERROR
+═══════════════════════════════════════════════════════════════
+
+cd /root/ai-teacher-training-nextjs && \
+sed -i 's/export const { handlers, signIn, signOut, auth } = NextAuth({/export const { handlers, signIn, signOut, auth } = NextAuth({\n  trustHost: true,/' lib/auth.ts && \
+docker-compose -f docker-compose.prod.yml up -d --build app && \
+echo "" && \
+echo "🔄 Rebuilding... This takes 2-3 minutes." && \
+echo "✅ Once done, the auth error will be fixed!" && \
+echo "" && \
+echo "Watch progress with: docker-compose -f docker-compose.prod.yml logs -f app"
+
+═══════════════════════════════════════════════════════════════
+  OR - If you prefer manual steps:
+═══════════════════════════════════════════════════════════════
+
+# 1. Edit the auth file
+nano /root/ai-teacher-training-nextjs/lib/auth.ts
+
+# 2. Find line 6: export const { handlers, signIn, signOut, auth } = NextAuth({
+
+# 3. Add a new line after it:
+#    trustHost: true,
+
+# 4. Save (Ctrl+O, Enter, Ctrl+X)
+
+# 5. Rebuild
+cd /root/ai-teacher-training-nextjs
+docker-compose -f docker-compose.prod.yml up -d --build app
+
+# 6. Watch logs (Ctrl+C to exit)
+docker-compose -f docker-compose.prod.yml logs -f app
+
+═══════════════════════════════════════════════════════════════

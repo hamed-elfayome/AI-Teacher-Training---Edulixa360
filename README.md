@@ -131,6 +131,23 @@ Use the credentials you set during deployment:
 
 ## 🐛 Troubleshooting
 
+### NextAuth UntrustedHost Error
+
+**Error**: `[auth][error] UntrustedHost: Host must be trusted`
+
+**Quick Fix**:
+```bash
+sudo ./fix-auth-trust.sh
+```
+
+**Manual Fix**:
+```bash
+echo 'AUTH_TRUST_HOST="true"' >> .env.production
+docker-compose -f docker-compose.prod.yml restart app
+```
+
+> **Note**: This is now included in both deployment scripts automatically.
+
 ### Site Returns 504 Gateway Timeout
 
 **Cause**: Traefik can't reach the container

@@ -30,10 +30,25 @@ export default function DashboardPage() {
   const fetchAnalytics = async () => {
     try {
       const response = await fetch("/api/analytics?period=30d");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
       setAnalytics(data);
     } catch (error) {
       console.error("Error fetching analytics:", error);
+      // Set default empty data on error
+      setAnalytics({
+        overview: {
+          totalVisitors: 0,
+          totalSubmissions: 0,
+          conversionRate: 0,
+        },
+        countries: {
+          visitors: [],
+          submissions: [],
+        },
+      });
     } finally {
       setLoading(false);
     }
