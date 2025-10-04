@@ -22,34 +22,43 @@ const ContactForm = ({ onSuccess }) => {
 
     const fetchGuestData = async () => {
       try {
+        // Check if visitor already tracked in this session
+        const visitorTracked = sessionStorage.getItem('visitor_tracked');
+        
         const geoResponse = await fetch('https://ipapi.co/json/');
         if (geoResponse.ok) {
           const data = await geoResponse.json();
           setGuestData(data);
 
-          // Send visitor data to database via API
-          const visitorData = {
-            ip: data.ip || 'Unknown',
-            city: data.city || null,
-            region: data.region || null,
-            country: data.country_name || null,
-            countryCode: data.country_code || null,
-            timezone: data.timezone || null,
-            latitude: data.latitude || null,
-            longitude: data.longitude || null,
-            org: data.org || null,
-            userAgent: navigator.userAgent
-          };
+          // Only send visitor data if not already tracked in this session
+          if (!visitorTracked) {
+            const visitorData = {
+              ip: data.ip || 'Unknown',
+              city: data.city || null,
+              region: data.region || null,
+              country: data.country_name || null,
+              countryCode: data.country_code || null,
+              timezone: data.timezone || null,
+              latitude: data.latitude || null,
+              longitude: data.longitude || null,
+              org: data.org || null,
+              userAgent: navigator.userAgent
+            };
 
-          await fetch('/api/visitors', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(visitorData)
-          });
+            await fetch('/api/visitors', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(visitorData)
+            });
 
-          console.log('Visitor data sent to database');
+            // Mark visitor as tracked in sessionStorage
+            sessionStorage.setItem('visitor_tracked', 'true');
+            console.log('Visitor data sent to database');
+          } else {
+            console.log('Visitor already tracked in this session');
+          }
         }
       } catch (error) {
         console.warn('Could not fetch or send guest location data:', error);

@@ -79,7 +79,8 @@ curl https://ai-edulixa360.hamedelfayome.dev
 | Database password | ✅ Fixed | Volume removal + redeploy |
 | Missing tables | ✅ Fixed | prisma/migrations/ |
 | 504 Gateway timeout | ✅ Fixed | deploy-traefik.sh (network label) |
-| **NextAuth untrusted** | ✅ **Fixed** | **lib/auth.ts** |
+| NextAuth untrusted | ✅ Fixed | lib/auth.ts |
+| **Dashboard 500 error** | ✅ **Fixed** | **analytics/route.ts, dashboard/page.tsx** |
 
 ---
 
