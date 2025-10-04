@@ -149,17 +149,44 @@ const Footer = () => {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="flex items-center gap-1.5 text-muted-foreground"
+              className="flex flex-col md:flex-row items-center gap-2 text-muted-foreground"
             >
-              <span>صُنع بـ</span>
-              <motion.span
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                className="text-primary"
+              <div className="flex items-center gap-1.5">
+                <span>صُنع بـ</span>
+                <motion.span
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  className="text-primary"
+                >
+                  ❤️
+                </motion.span>
+                <span>في العالم العربي</span>
+              </div>
+              <span className="hidden md:inline text-border">|</span>
+              <motion.a
+                href="https://hamedelfayome.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1.5 group"
               >
-                ❤️
-              </motion.span>
-              <span>في العالم العربي</span>
+                <span className="text-xs">Developed by</span>
+                <span className="font-semibold text-primary">Hamed Elfayome</span>
+                <svg
+                  className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
+              </motion.a>
             </motion.div>
           </div>
         </div>
