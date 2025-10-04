@@ -81,6 +81,7 @@ DATABASE_URL="postgresql://aiuser:${DB_PASSWORD}@postgres:5432/ai_teacher_traini
 # NextAuth
 NEXTAUTH_URL="https://${DOMAIN}"
 NEXTAUTH_SECRET="${NEXTAUTH_SECRET}"
+AUTH_TRUST_HOST="true"
 
 # Admin Credentials
 ADMIN_EMAIL="${ADMIN_EMAIL}"
